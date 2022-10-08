@@ -1,7 +1,5 @@
 // import * as comlink from 'comlink';
-importScripts(
-  'https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.3.1634603088/hands.js'
-);
+importScripts('@mediapipe/hands/hands.js');
 // importScripts(
 //   'https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1635986972/hands.js'
 // );

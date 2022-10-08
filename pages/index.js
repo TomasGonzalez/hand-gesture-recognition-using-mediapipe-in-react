@@ -1,30 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
-import cv from '../services/cv';
-import hands from '../services/hands';
+// import cv from '../services/cv';
+// import hands from '../services/hands';
 
-// We'll limit the processing size to 200px.
 const maxVideoSize = 200;
 
-/**
- * What we're going to render is:
- *
- * 1. A video component so the user can see what's on the camera.
- *
- * 2. A button to generate an image of the video, load OpenCV and
- * process the image.
- *
- * 3. A canvas to allow us to capture the image of the video and
- * show it to the user.
- */
 export default function Page() {
   const [processing, updateProcessing] = useState(false);
   const videoElement = useRef(null);
   const canvasEl = useRef(null);
 
-  /**
-   * In the onClick event we'll capture a frame within
-   * the video to pass it to our service.
-   */
   async function onClick() {
     updateProcessing(true);
     await hands.load();
