@@ -9,6 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@mediapipe/camera_utils": "^0.3.1640029074",
+    "@mediapipe/control_utils": "^0.6.1629159505",
+    "@mediapipe/drawing_utils": "^0.3.1620248257",
     "@mediapipe/hands": "^0.4.1646424915",
     "@mediapipe/holistic": "^0.5.1635989137",
     "comlink": "^4.3.1",
@@ -18,6 +21,7 @@
     "react-dom": "18.2.0"
   },
   "devDependencies": {
+    "@types/react": "18.0.21",
     "eslint": "8.24.0",
     "eslint-config-next": "12.3.1"
   }
