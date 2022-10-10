@@ -1,8 +1,8 @@
 import React from 'react';
 import useLogic from './hooks/index';
 
-function GameScreen() {
-  const { videoElement, maxVideoSize, canvasEl } = useLogic();
+function HandsCapture() {
+  const { videoElement, maxVideoWidth, maxVideoHeight, canvasEl } = useLogic();
   return (
     <div
       style={{
@@ -18,9 +18,9 @@ function GameScreen() {
         playsInline
         ref={videoElement}
       />
-      <canvas ref={canvasEl} width={maxVideoSize} height={maxVideoSize} />
+      <canvas ref={canvasEl} width={maxVideoWidth} height={maxVideoHeight} />
     </div>
   );
 }
 
-export default GameScreen;
+export default HandsCapture;

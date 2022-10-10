@@ -3,28 +3,25 @@ import { drawConnectors, drawLandmarks } from '@mediapipe/drawing_utils';
 import { Hands, HAND_CONNECTIONS } from '@mediapipe/hands';
 import { useEffect, useRef, useState } from 'react';
 
-const maxVideoSize = 200;
+const maxVideoHeight = 720 / 3;
+const maxVideoWidth = 1080 / 3;
 
 function useLogic() {
-  const [processing, updateProcessing] = useState(false);
   const videoElement = useRef<any>(null);
   const hands = useRef<any>(null);
   const camera = useRef<any>(null);
   const canvasEl = useRef(null);
 
   function onResults(results) {
+    if (results.multiHandLandmarks.length) {
+      console.log(results, 'restlut');
+    }
     if (canvasEl.current) {
       const ctx = canvasEl.current.getContext('2d');
 
       ctx.save();
       ctx.clearRect(0, 0, canvasEl.current.width, canvasEl.current.height);
-      ctx.drawImage(
-        results.image,
-        0,
-        0,
-        canvasEl.current.width,
-        canvasEl.current.height
-      );
+      ctx.drawImage(results.image, 0, 0, maxVideoWidth, maxVideoHeight);
       if (results.multiHandLandmarks) {
         for (const landmarks of results.multiHandLandmarks) {
           drawConnectors(ctx, landmarks, HAND_CONNECTIONS, {
@@ -55,7 +52,6 @@ function useLogic() {
     });
 
     hands.current.onResults(onResults);
-    console.log('test');
   };
 
   useEffect(() => {
@@ -64,8 +60,8 @@ function useLogic() {
         onFrame: async () => {
           await hands.current.send({ image: videoElement.current });
         },
-        width: maxVideoSize,
-        height: maxVideoSize,
+        width: maxVideoWidth,
+        height: maxVideoHeight,
       });
       camera.current.start();
     }
@@ -74,7 +70,7 @@ function useLogic() {
     loadHands();
   }, []);
 
-  return { maxVideoSize, canvasEl, videoElement, processing };
+  return { maxVideoHeight, maxVideoWidth, canvasEl, videoElement };
 }
 
 export default useLogic;

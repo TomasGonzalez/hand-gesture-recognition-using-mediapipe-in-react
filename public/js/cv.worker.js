@@ -17,7 +17,6 @@ onmessage = function (e) {
   switch (e.data.msg) {
     case 'load': {
       // Import Webassembly script
-      console.log('trying to load opencv');
       importScripts('./opencv.js');
       waitForOpencv(function (success) {
         console.log(success, 'what is this?');

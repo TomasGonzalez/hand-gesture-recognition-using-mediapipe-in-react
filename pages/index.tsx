@@ -1,6 +1,6 @@
 import React from 'react';
-import GameScreen from './game-screen/index';
+import HandsCapture from './hands-capture/index';
 
 export default function Page() {
-  return <GameScreen />;
+  return <HandsCapture />;
 }
