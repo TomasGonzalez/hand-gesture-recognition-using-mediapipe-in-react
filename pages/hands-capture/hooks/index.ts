@@ -1,7 +1,8 @@
+import { useEffect, useRef } from 'react';
 import { Camera } from '@mediapipe/camera_utils';
 import { drawConnectors, drawLandmarks } from '@mediapipe/drawing_utils';
 import { Hands, HAND_CONNECTIONS } from '@mediapipe/hands';
-import { useEffect, useRef, useState } from 'react';
+import useKeyPointClassifier from '../hooks/useKeyPointClassifier';
 
 const maxVideoHeight = 720 / 3;
 const maxVideoWidth = 1080 / 3;
@@ -12,9 +13,12 @@ function useLogic() {
   const camera = useRef<any>(null);
   const canvasEl = useRef(null);
 
+  const { loadGraphModel } = useKeyPointClassifier();
+
   function onResults(results) {
     if (results.multiHandLandmarks.length) {
-      console.log(results, 'restlut');
+      loadGraphModel(results);
+      // console.log(results, 'restlut');
     }
     if (canvasEl.current) {
       const ctx = canvasEl.current.getContext('2d');
@@ -50,7 +54,6 @@ function useLogic() {
       minDetectionConfidence: 0.5,
       minTrackingConfidence: 0.5,
     });
-
     hands.current.onResults(onResults);
   };
 
