@@ -4,8 +4,8 @@ import { drawConnectors, drawLandmarks } from '@mediapipe/drawing_utils';
 import { Hands, HAND_CONNECTIONS } from '@mediapipe/hands';
 import useKeyPointClassifier from '../hooks/useKeyPointClassifier';
 
-const maxVideoHeight = 720 / 3;
-const maxVideoWidth = 1080 / 3;
+const maxVideoWidth = 960;
+const maxVideoHeight = 540;
 
 function useLogic() {
   const videoElement = useRef<any>(null);
@@ -13,19 +13,19 @@ function useLogic() {
   const camera = useRef<any>(null);
   const canvasEl = useRef(null);
 
-  const { loadGraphModel } = useKeyPointClassifier();
+  const { loadGraphModel, preProcessLandmark } = useKeyPointClassifier();
 
   function onResults(results) {
-    if (results.multiHandLandmarks.length) {
-      loadGraphModel(results);
-      // console.log(results, 'restlut');
-    }
     if (canvasEl.current) {
+      if (results.multiHandLandmarks.length) {
+        preProcessLandmark(results);
+      }
       const ctx = canvasEl.current.getContext('2d');
 
       ctx.save();
       ctx.clearRect(0, 0, canvasEl.current.width, canvasEl.current.height);
       ctx.drawImage(results.image, 0, 0, maxVideoWidth, maxVideoHeight);
+
       if (results.multiHandLandmarks) {
         for (const landmarks of results.multiHandLandmarks) {
           drawConnectors(ctx, landmarks, HAND_CONNECTIONS, {
@@ -70,6 +70,7 @@ function useLogic() {
     }
 
     initCamara();
+    loadGraphModel();
     loadHands();
   }, []);
 

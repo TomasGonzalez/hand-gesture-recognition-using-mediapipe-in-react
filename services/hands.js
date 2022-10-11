@@ -36,7 +36,6 @@ class Hands {
 
     // Capture events and save [status, event] inside the _status object
     this.worker.onmessage = (e) => {
-      console.log(['done', e], e.data.msg, e.data);
       this._status[e.data.msg] = ['done', e];
     };
     this.worker.onerror = (e) => {

@@ -6,10 +6,8 @@ importScripts('@mediapipe/hands/hands.js');
 let hands;
 
 async function loadModel(e) {
-  console.log(this);
   hands = new this.Hands({
     locateFile: (file, base) => {
-      console.log(file, 'this is file');
       return `https://cdn.jsdelivr.net/npm/@mediapipe/hands@${this.VERSION}/${file}`;
     },
   });
@@ -22,10 +20,8 @@ async function loadModel(e) {
   });
 
   await hands.initialize();
-  console.log('initialized');
 
   hands.onResults((results) => {
-    console.log(results, 'this are the results');
     postMessage({ msg, payload: result });
   });
 
