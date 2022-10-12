@@ -13,12 +13,12 @@ function useLogic() {
   const camera = useRef<any>(null);
   const canvasEl = useRef(null);
 
-  const { loadGraphModel, preProcessLandmark } = useKeyPointClassifier();
+  const { loadGraphModel, processLandmark } = useKeyPointClassifier();
 
   function onResults(results) {
     if (canvasEl.current) {
       if (results.multiHandLandmarks.length) {
-        preProcessLandmark(results);
+        processLandmark(results);
       }
       const ctx = canvasEl.current.getContext('2d');
 
@@ -70,7 +70,6 @@ function useLogic() {
     }
 
     initCamara();
-    loadGraphModel();
     loadHands();
   }, []);
 
