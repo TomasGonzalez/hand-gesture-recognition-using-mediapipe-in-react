@@ -74,29 +74,31 @@ function useKeyPointClassifier() {
     const result = await model.current
       .execute(tf.tensor2d([landmarkList]))
       .squeeze()
-      .array();
+      .argMax()
+      .data();
 
     return result;
   };
 
-  const processLandmark = async (results: Results) => {
+  const processLandmark = async (handLandmarks: Results, image) => {
+    // Bounding box calculation
+    // const brect = calcBoundingRect(image, handLandmarks);
+
+    const landmarkList = calcLandmarkList(image, handLandmarks);
+    const preProcessedLandmarkList = preProcessLandmark(landmarkList);
+    const handSignId = await keyPointClassifier(preProcessedLandmarkList);
+    return handSignId[0];
+  };
+
+  const loadModel = async () => {
     model.current = await tf.loadGraphModel(
       '/tf-models/key-point-classifier/model.json'
     );
-
-    _.zip(results.multiHandLandmarks, results.multiHandedness).forEach(
-      async ([handLandmarks, handedness]) => {
-        // Bounding box calculation
-        const brect = calcBoundingRect(results.image, handLandmarks);
-
-        const landmarkList = calcLandmarkList(results.image, handLandmarks);
-        const preProcessedLandmarkList = preProcessLandmark(landmarkList);
-        const handSignId = await keyPointClassifier(preProcessedLandmarkList);
-        console.log(handSignId, 'this is id');
-      }
-    );
   };
 
+  useEffect(() => {
+    loadModel();
+  }, []);
   return { processLandmark };
 }
 

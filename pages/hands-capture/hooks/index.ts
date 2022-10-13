@@ -4,10 +4,10 @@ import {
   drawConnectors,
   drawLandmarks,
   drawRectangle,
-  NormalizedRect,
 } from '@mediapipe/drawing_utils';
-import { Hands, HAND_CONNECTIONS, Landmark } from '@mediapipe/hands';
+import { Hands, HAND_CONNECTIONS } from '@mediapipe/hands';
 import useKeyPointClassifier from '../hooks/useKeyPointClassifier';
+import CONFIGS from '../../../constants';
 
 const maxVideoWidth = 960;
 const maxVideoHeight = 540;
@@ -17,13 +17,13 @@ function useLogic() {
   const hands = useRef<any>(null);
   const camera = useRef<any>(null);
   const canvasEl = useRef(null);
+  const handsGesture = useRef<any>([]);
 
   const { processLandmark } = useKeyPointClassifier();
 
-  function onResults(results) {
+  async function onResults(results) {
     if (canvasEl.current) {
       if (results.multiHandLandmarks.length) {
-        processLandmark(results);
       }
       const ctx = canvasEl.current.getContext('2d');
 
@@ -32,9 +32,20 @@ function useLogic() {
       ctx.drawImage(results.image, 0, 0, maxVideoWidth, maxVideoHeight);
 
       if (results.multiHandLandmarks) {
-        for (const landmarks of results.multiHandLandmarks) {
+        for (const [index, landmarks] of results.multiHandLandmarks.entries()) {
+          processLandmark(landmarks, results.image).then(
+            (val) => (handsGesture.current[index] = val)
+          );
+          console.log('gesture');
           const landmarksX = landmarks.map((landmark) => landmark.x);
           const landmarksY = landmarks.map((landmark) => landmark.y);
+          ctx.fillStyle = '#ff0000';
+          ctx.font = '24px serif';
+          ctx.fillText(
+            CONFIGS.keypointClassifierLabels[handsGesture.current[index]],
+            maxVideoWidth * Math.min(...landmarksX),
+            maxVideoHeight * Math.min(...landmarksY) - 15
+          );
           drawRectangle(
             ctx,
             {
