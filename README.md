@@ -1,4 +1,4 @@
-# this is an implementation of the repo:
+# This is an implementation of the repo:
 
 https://github.com/Kazuhito00/hand-gesture-recognition-using-mediapipe
 
