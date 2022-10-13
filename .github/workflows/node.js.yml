@@ -24,7 +24,11 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install packages
         run: npm ci
+<<<<<<< HEAD
       - name: Build project and export
+=======
+      - name: Build project & Export static files
+>>>>>>> 46a5358eb3facb2bd8436ecdfa4dde8acf351971
         run: npm run build
       - name: Add .nojekyll file
         run: touch ./out/.nojekyll
