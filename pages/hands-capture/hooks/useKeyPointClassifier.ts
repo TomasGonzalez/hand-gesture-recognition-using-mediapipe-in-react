@@ -1,27 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { Landmark, Results } from '@mediapipe/hands';
 import * as tf from '@tensorflow/tfjs';
-import cv, { absdiff, Mat } from '@techstark/opencv-js';
 import _ from 'lodash';
-
-const calcBoundingRect = (image, landmarks) => {
-  const { width: imageWidth, height: imageHeight } = image;
-
-  const landmarkArray = [];
-
-  Object.values(landmarks).forEach((landmark: Landmark) => {
-    const landmarkX = Math.min(landmark.x * imageWidth, imageWidth - 1);
-    const landmarkY = Math.min(landmark.y * imageHeight, imageHeight - 1);
-
-    landmarkArray.push(landmarkX);
-    landmarkArray.push(landmarkY);
-  });
-
-  const mat = cv.matFromArray(landmarks.length, 2, cv.CV_32S, landmarkArray);
-  const { x, y, height: h, width: w } = cv.boundingRect(mat);
-
-  return [x, y, x + w, y + h];
-};
 
 const calcLandmarkList = (image, landmarks) => {
   const { width: imageWidth, height: imageHeight } = image;
@@ -81,9 +61,6 @@ function useKeyPointClassifier() {
   };
 
   const processLandmark = async (handLandmarks: Results, image) => {
-    // Bounding box calculation
-    // const brect = calcBoundingRect(image, handLandmarks);
-
     const landmarkList = calcLandmarkList(image, handLandmarks);
     const preProcessedLandmarkList = preProcessLandmark(landmarkList);
     const handSignId = await keyPointClassifier(preProcessedLandmarkList);

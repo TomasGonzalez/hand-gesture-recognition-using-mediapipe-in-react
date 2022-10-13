@@ -1,7 +1,9 @@
 /** @type {import('next').NextConfig} */
+
 const nextConfig = {
   reactStrictMode: true,
-  swcMinify: true,
+  basePath: '/hand-gesture-recognition-using-mediapipe-in-react',
+  assetPrefix: '/hand-gesture-recognition-using-mediapipe-in-react',
   webpack: (config) => {
     const cvConfig = {
       fallback: {
