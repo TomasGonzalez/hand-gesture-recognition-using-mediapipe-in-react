@@ -1,20 +1,19 @@
 name: Deploy to GitHub Pages
 
-
 on:
   push:
     branches: [main]
-
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      NEXT_PUBLIC_BASE_PATH: /hand-gesture-recognition-using-mediapipe-in-react
 
     strategy:
       matrix:
         node-version: [16.x]
-
 
     steps:
       - name: Get files
@@ -25,10 +24,8 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install packages
         run: npm ci
-      - name: Build project
+      - name: Build project and export
         run: npm run build
-      - name: Export static files
-        run: npm run export
       - name: Add .nojekyll file
         run: touch ./out/.nojekyll
       - name: Deploy
