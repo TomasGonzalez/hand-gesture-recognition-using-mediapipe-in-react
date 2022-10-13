@@ -70,7 +70,7 @@ function useKeyPointClassifier() {
 
   const loadModel = async () => {
     model.current = await tf.loadGraphModel(
-      `${prefix}}/tf-models/key-point-classifier/model.json`
+      `${prefix}/tf-models/key-point-classifier/model.json`
     );
   };
 
