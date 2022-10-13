@@ -4,7 +4,7 @@ https://github.com/Kazuhito00/hand-gesture-recognition-using-mediapipe
 
 but in React, and nextJS.
 
-I made It because I need it for another project, and thougt that It would be a good idea to upload it in this rough form just in case It helps anyone.
+I made It because I need it for another project, and thought that It would be a good idea to upload it in this rough form just in case It helps anyone.
 
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
