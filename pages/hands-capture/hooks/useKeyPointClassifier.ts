@@ -70,10 +70,13 @@ const preProcessLandmark = (landmarkList) => {
 function useKeyPointClassifier() {
   const model = useRef<any>();
 
-  const keyPointClassifier = (landmarkList) => {
-    const result = model.current.execute(tf.tensor2d([landmarkList])).print();
+  const keyPointClassifier = async (landmarkList) => {
+    const result = await model.current
+      .execute(tf.tensor2d([landmarkList]))
+      .squeeze()
+      .array();
 
-    console.log(result, 'what is this');
+    return result;
   };
 
   const processLandmark = async (results: Results) => {
@@ -82,13 +85,14 @@ function useKeyPointClassifier() {
     );
 
     _.zip(results.multiHandLandmarks, results.multiHandedness).forEach(
-      ([handLandmarks, handedness]) => {
+      async ([handLandmarks, handedness]) => {
         // Bounding box calculation
         const brect = calcBoundingRect(results.image, handLandmarks);
 
         const landmarkList = calcLandmarkList(results.image, handLandmarks);
         const preProcessedLandmarkList = preProcessLandmark(landmarkList);
-        const handSignId = keyPointClassifier(preProcessedLandmarkList);
+        const handSignId = await keyPointClassifier(preProcessedLandmarkList);
+        console.log(handSignId, 'this is id');
       }
     );
   };

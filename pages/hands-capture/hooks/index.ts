@@ -1,7 +1,12 @@
 import { useEffect, useRef } from 'react';
 import { Camera } from '@mediapipe/camera_utils';
-import { drawConnectors, drawLandmarks } from '@mediapipe/drawing_utils';
-import { Hands, HAND_CONNECTIONS } from '@mediapipe/hands';
+import {
+  drawConnectors,
+  drawLandmarks,
+  drawRectangle,
+  NormalizedRect,
+} from '@mediapipe/drawing_utils';
+import { Hands, HAND_CONNECTIONS, Landmark } from '@mediapipe/hands';
 import useKeyPointClassifier from '../hooks/useKeyPointClassifier';
 
 const maxVideoWidth = 960;
@@ -13,7 +18,7 @@ function useLogic() {
   const camera = useRef<any>(null);
   const canvasEl = useRef(null);
 
-  const { loadGraphModel, processLandmark } = useKeyPointClassifier();
+  const { processLandmark } = useKeyPointClassifier();
 
   function onResults(results) {
     if (canvasEl.current) {
@@ -28,13 +33,35 @@ function useLogic() {
 
       if (results.multiHandLandmarks) {
         for (const landmarks of results.multiHandLandmarks) {
+          const landmarksX = landmarks.map((landmark) => landmark.x);
+          const landmarksY = landmarks.map((landmark) => landmark.y);
+          drawRectangle(
+            ctx,
+            {
+              xCenter:
+                Math.min(...landmarksX) +
+                (Math.max(...landmarksX) - Math.min(...landmarksX)) / 2,
+              yCenter:
+                Math.min(...landmarksY) +
+                (Math.max(...landmarksY) - Math.min(...landmarksY)) / 2,
+              width: Math.max(...landmarksX) - Math.min(...landmarksX),
+              height: Math.max(...landmarksY) - Math.min(...landmarksY),
+              rotation: 0,
+              rectId: 13,
+            },
+            {
+              fillColor: 'transparent',
+              color: '#ff0000',
+              lineWidth: 1,
+            }
+          );
           drawConnectors(ctx, landmarks, HAND_CONNECTIONS, {
             color: '#00ffff',
-            lineWidth: 5,
+            lineWidth: 2,
           });
           drawLandmarks(ctx, landmarks, {
             color: '#ffff29',
-            lineWidth: 2,
+            lineWidth: 1,
           });
         }
       }
