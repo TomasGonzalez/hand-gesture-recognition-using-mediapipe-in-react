@@ -6,6 +6,10 @@ but in React, and nextJS.
 
 The working demo is deployed in here https://tomasgonzalez.github.io/hand-gesture-recognition-using-mediapipe-in-react/ .
 
+
+https://user-images.githubusercontent.com/26396804/198848050-095785e7-9a83-444d-91d0-f432eb21a4a4.mp4
+
+
 I made It because I need it for another project, and thought that It would be a good idea to upload it in this rough form just in case It helps anyone.
 
 
