@@ -2,7 +2,6 @@ import { useEffect, useRef } from 'react';
 import { Landmark, Results } from '@mediapipe/hands';
 import * as tf from '@tensorflow/tfjs';
 import _ from 'lodash';
-import { prefix } from '../../../../constants';
 
 const calcLandmarkList = (image, landmarks) => {
   const { width: imageWidth, height: imageHeight } = image;
@@ -69,7 +68,6 @@ function useKeyPointClassifier() {
   };
 
   const loadModel = async () => {
-    console.log(window.location.hostname, 'location hostname')
     model.current = await tf.loadGraphModel(
       `/tf-models/key-point-classifier/model.json`
     );
