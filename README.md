@@ -9,6 +9,9 @@ https://user-images.githubusercontent.com/26396804/198848050-095785e7-9a83-444d-
 
 I made It because I need it for another project, and thought that It would be a good idea to upload it in this rough form just in case It helps anyone.
 
+## To convert the hdf5 model to tfjs you can use the [tensorflowjs_converter](https://www.tensorflow.org/js/guide/conversion) CLI following command: 
+tensorflowjs_converter --input_format keras --output_format tfjs_graph_model model/keypoint_classifier/keypoint_classifier.hdf5 tfjs_model/
+
 ## Getting Started
 
 First, run the development server:
